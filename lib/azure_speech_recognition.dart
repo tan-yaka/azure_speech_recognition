@@ -6,8 +6,7 @@ import 'package:flutter/services.dart';
 typedef void StringResultHandler(String text);
 
 class AzureSpeechRecognition {
-  static const MethodChannel _channel =
-      const MethodChannel('azure_speech_recognition');
+  static const MethodChannel _channel = const MethodChannel('azure_speech_recognition');
 
   static final AzureSpeechRecognition _azureSpeechRecognition =
       new AzureSpeechRecognition._internal();
@@ -21,24 +20,31 @@ class AzureSpeechRecognition {
   static String _subKey;
   static String _region;
   static String _lang = "en-EN";
+  static String _endpoint;
   static String _languageUnderstandingSubscriptionKey;
   static String _languageUnderstandingServiceRegion;
   static String _languageUnderstandingAppId;
+  static bool _useSubscription;
 
   /// default intitializer for almost every type except for the intent recognizer.
   /// Default language -> English
-  AzureSpeechRecognition.initialize(String subKey, String region,
-      {String lang}) {
+  AzureSpeechRecognition.initializeWithSubscription(String subKey, String region, {String lang}) {
     _subKey = subKey;
     _region = region;
     if (lang != null) _lang = lang;
+    _useSubscription = true;
+  }
+
+  AzureSpeechRecognition.initializeWithEndpoint(String endpoint, String subKey, {String lang}) {
+    _subKey = subKey;
+    _endpoint = endpoint;
+    if (lang != null) _lang = lang;
+    _useSubscription = false;
   }
 
   /// initializer for intent purpose
   /// Default language -> English
-  AzureSpeechRecognition.initializeLanguageUnderstading(
-      String subKey, String region, String appId,
-      {lang}) {
+  AzureSpeechRecognition.initializeLanguageUnderstading(String subKey, String region, String appId, {lang}) {
     _languageUnderstandingSubscriptionKey = subKey;
     _languageUnderstandingServiceRegion = region;
     _languageUnderstandingAppId = appId;
@@ -105,8 +111,7 @@ class AzureSpeechRecognition {
 
   static simpleVoiceRecognition() {
     if ((_subKey != null && _region != null)) {
-      _channel.invokeMethod('simpleVoice',
-          {'language': _lang, 'subscriptionKey': _subKey, 'region': _region});
+      _channel.invokeMethod('simpleVoice', {'language': _lang, 'subscriptionKey': _subKey, 'region': _region});
     } else {
       throw "Error: SpeechRecognitionParameters not initialized correctly";
     }
@@ -116,9 +121,12 @@ class AzureSpeechRecognition {
   /// Return the text obtained or the error catched
 
   static micStream() {
-    if ((_subKey != null && _region != null)) {
-      _channel.invokeMethod('micStream',
-          {'language': _lang, 'subscriptionKey': _subKey, 'region': _region});
+    if (_useSubscription && _subKey != null && _region != null) {
+      _channel.invokeMethod('micStreamFromSubscription', {'language': _lang, 'subscriptionKey': _subKey,
+        'region': _region});
+    } else if (!_useSubscription && _endpoint != null && _subKey != null) {
+      _channel.invokeMethod('micStreamFromEndpoint', {'language': _lang, 'subscriptionKey': _subKey,
+        'endpoint': _endpoint});
     } else {
       throw "Error: SpeechRecognitionParameters not initialized correctly";
     }

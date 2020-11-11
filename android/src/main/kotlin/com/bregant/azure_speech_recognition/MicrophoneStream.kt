@@ -1,15 +1,14 @@
 package com.bregant.azure_speech_recognition
 
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
-import android.util.Log;
+import android.media.AudioFormat
+import android.media.AudioRecord
+import android.media.MediaRecorder
 
-import com.microsoft.cognitiveservices.speech.audio.PullAudioInputStreamCallback;
-import com.microsoft.cognitiveservices.speech.audio.AudioStreamFormat;
+import com.microsoft.cognitiveservices.speech.audio.PullAudioInputStreamCallback
+import com.microsoft.cognitiveservices.speech.audio.AudioStreamFormat
 
 class MicrophoneStream(
-    var SAMPLE_RATE : Int = 16000, 
+    var SAMPLE_RATE : Int = 16000,
     var thisFormat : AudioStreamFormat = AudioStreamFormat.getWaveFormatPCM(16000.toLong(), 16.toShort(), 1.toShort()),
     var recorder : AudioRecord? = null
     ) : PullAudioInputStreamCallback(){
@@ -20,37 +19,35 @@ class MicrophoneStream(
 
     init {
         //thisFormat = AudioStreamFormat.getWaveFormatPCM(SAMPLE_RATE.toLong(), 16.toShort(), 1.toShort());
-        initMic();
+        initMic()
     }
 
     fun getFormat() : AudioStreamFormat {
-        return this.thisFormat;
+        return this.thisFormat
     }
 
-    //@Override
     override fun read(bytes : ByteArray) :Int {
-        var ret : Int = recorder!!.read(bytes, 0, bytes.size);
-        return ret;
+        return recorder!!.read(bytes, 0, bytes.size)
     }
 
-    
+
     override fun close() {
-        this.recorder!!.release();
-        this.recorder = null;
+        this.recorder!!.release()
+        this.recorder = null
     }
 
-    fun initMic() {
+    private fun initMic() {
         // Note: currently, the Speech SDK support 16 kHz sample rate, 16 bit samples, mono (single-channel) only.
-        var af : AudioFormat = AudioFormat.Builder()
+        val af : AudioFormat = AudioFormat.Builder()
                 .setSampleRate(SAMPLE_RATE)
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
                 .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
-                .build();
+                .build()
         this.recorder = AudioRecord.Builder()
                 .setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION)
                 .setAudioFormat(af)
-                .build();
+                .build()
 
-        this.recorder!!.startRecording();
+        this.recorder!!.startRecording()
     }
 }
