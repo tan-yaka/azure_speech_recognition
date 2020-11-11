@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 typedef void StringResultHandler(String text);
 
@@ -28,23 +29,29 @@ class AzureSpeechRecognition {
 
   /// default intitializer for almost every type except for the intent recognizer.
   /// Default language -> English
-  AzureSpeechRecognition.initializeWithSubscription(String subKey, String region, {String lang}) {
-    _subKey = subKey;
+  AzureSpeechRecognition.initializeWithSubscription(
+      {@required String subscriptionKey, @required String region, @required String lang}
+    ) {
+    _subKey = subscriptionKey;
     _region = region;
-    if (lang != null) _lang = lang;
+    _lang = lang;
     _useSubscription = true;
   }
 
-  AzureSpeechRecognition.initializeWithEndpoint(String endpoint, String subKey, {String lang}) {
-    _subKey = subKey;
+  AzureSpeechRecognition.initializeWithEndpoint(
+      {@required String endpoint, @required String subscriptionKey, @required String lang}
+    ) {
+    _subKey = subscriptionKey;
     _endpoint = endpoint;
-    if (lang != null) _lang = lang;
+    _lang = lang;
     _useSubscription = false;
   }
 
   /// initializer for intent purpose
   /// Default language -> English
-  AzureSpeechRecognition.initializeLanguageUnderstading(String subKey, String region, String appId, {lang}) {
+  AzureSpeechRecognition.initializeLanguageUnderstanding(
+      {@required String subKey, @required String region, @required @required String appId, @required String lang}
+    ) {
     _languageUnderstandingSubscriptionKey = subKey;
     _languageUnderstandingServiceRegion = region;
     _languageUnderstandingAppId = appId;
