@@ -14,24 +14,32 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _centerText = 'Unknown';
   AzureSpeechRecognition _speechAzure;
-  String subKey = "your_key";
-  String region = "your_server_region";
-  String endpoint = "endpoint";
-  String lang = "it-IT";
+  String _subKey = "e56a6d51f227478db9ef0aaffaec4c94";
+  String _region = "uksouth";
+  String _lang = "en-GB";
+  String _endpoint = "wss://uksouth.stt.speech.microsoft"
+      ".com/speech/recognition/conversation/cognitiveservices/v1?cid=4ca8fb3e-37f2-4451-987b-0dec158ae8dd";
   bool isRecording = false;
 
-void activateSpeechRecognizer(){
+Future<void> activateSpeechRecognizer() async {
+  _speechAzure = AzureSpeechRecognition();
   // MANDATORY INITIALIZATION
-  AzureSpeechRecognition.initializeWithSubscription(subKey, region,lang: lang);
-  //AzureSpeechRecognition.initializeWithEndpoint(endpoint, subKey, region,lang: lang);
+  AzureSpeechRecognition.initializeWithSubscription(subscriptionKey: _subKey, region: _region, lang: _lang);
+  //AzureSpeechRecognition.initializeWithEndpoint(endpoint: subscriptionKey: _subKey, _lang: _lang);
 
   _speechAzure.setFinalTranscription((text) {
-    // do what you want with your final transcription
+    print('final: ' + text);
     setState(() {
       _centerText = text;
       isRecording = false;
     });
+  });
 
+  _speechAzure.setRecognitionResultHandler((text) {
+    print('partial: ' + text);
+    setState(() {
+      _centerText = text;
+    });
   });
 
   _speechAzure.setRecognitionStartedHandler(() {
@@ -42,39 +50,32 @@ void activateSpeechRecognizer(){
 }
   @override
   void initState() {
-
-    _speechAzure = new AzureSpeechRecognition();
-
     activateSpeechRecognizer();
-
     super.initState();
   }
 
-Future _recognizeVoice() async {
+  void _recognizeVoice() {
     try {
-      AzureSpeechRecognition.simpleVoiceRecognition();//await platform.invokeMethod('azureVoice');
-
+      AzureSpeechRecognition.simpleVoiceRecognition();
     } on PlatformException catch (e) {
       print("Failed to get text '${e.message}'.");
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Azure STT Plugin example app'),
         ),
         body: Center(
           child: Column(
             children: <Widget>[
               Text('TEXT RECOGNIZED : $_centerText\n'),
               FloatingActionButton(
-                onPressed: (){
-                  if(!isRecording)_recognizeVoice();
+                onPressed: () {
+                  if(!isRecording) _recognizeVoice();
                 },
                 child: Icon(Icons.mic),),
             ],

@@ -9,8 +9,7 @@ typedef void StringResultHandler(String text);
 class AzureSpeechRecognition {
   static const MethodChannel _channel = const MethodChannel('azure_speech_recognition');
 
-  static final AzureSpeechRecognition _azureSpeechRecognition =
-      new AzureSpeechRecognition._internal();
+  static final AzureSpeechRecognition _azureSpeechRecognition = AzureSpeechRecognition._internal();
 
   factory AzureSpeechRecognition() => _azureSpeechRecognition;
 
@@ -20,14 +19,14 @@ class AzureSpeechRecognition {
 
   static String _subKey;
   static String _region;
-  static String _lang = "en-EN";
+  static String _lang;
   static String _endpoint;
   static String _languageUnderstandingSubscriptionKey;
   static String _languageUnderstandingServiceRegion;
   static String _languageUnderstandingAppId;
   static bool _useSubscription;
 
-  /// default intitializer for almost every type except for the intent recognizer.
+  /// default initializer for almost every type except for the intent recognizer.
   /// Default language -> English
   AzureSpeechRecognition.initializeWithSubscription(
       {@required String subscriptionKey, @required String region, @required String lang}
@@ -55,7 +54,7 @@ class AzureSpeechRecognition {
     _languageUnderstandingSubscriptionKey = subKey;
     _languageUnderstandingServiceRegion = region;
     _languageUnderstandingAppId = appId;
-    if (lang != null) _lang = lang;
+    _lang = lang;
   }
 
   StringResultHandler exceptionHandler;
@@ -66,6 +65,7 @@ class AzureSpeechRecognition {
   VoidCallback stopRecognitionHandler;
 
   Future _platformCallHandler(MethodCall call) async {
+    print(call.method);
     switch (call.method) {
       case "speech.onRecognitionStarted":
         recognitionStartedHandler();
@@ -106,15 +106,15 @@ class AzureSpeechRecognition {
   void setRecognitionStartedHandler(VoidCallback handler) =>
       recognitionStartedHandler = handler;
 
-  /// only for continuosly
+  /// only for continuously
   void setStartHandler(VoidCallback handler) =>
       startRecognitionHandler = handler;
 
-  /// only for continuosly
+  /// only for continuously
   void setStopHandler(VoidCallback handler) => stopRecognitionHandler = handler;
 
   /// Simple voice Recognition, the result will be sent only at the end.
-  /// Return the text obtained or the error catched
+  /// Return the text obtained or the error caught
 
   static simpleVoiceRecognition() {
     if ((_subKey != null && _region != null)) {
@@ -125,7 +125,7 @@ class AzureSpeechRecognition {
   }
 
   /// Speech recognition that return text while still recognizing
-  /// Return the text obtained or the error catched
+  /// Return the text obtained or the error caught
 
   static micStream() {
     if (_useSubscription && _subKey != null && _region != null) {
@@ -140,7 +140,7 @@ class AzureSpeechRecognition {
   }
 
   /// Speech recognition that doesnt stop recording text until you stopped it by calling again this function
-  /// Return the text obtained or the error catched
+  /// Return the text obtained or the error caught
 
   static continuousRecording() {
     if (_subKey != null && _region != null) {
@@ -152,7 +152,7 @@ class AzureSpeechRecognition {
   }
 
   /// Intent recognition
-  /// Return the intent obtained or the error catched
+  /// Return the intent obtained or the error caught
 
   static intentRecognizer() {
     if (_languageUnderstandingSubscriptionKey != null &&
@@ -171,7 +171,7 @@ class AzureSpeechRecognition {
 
   /// Speech recognition with Keywords
   /// [kwsModelName] name of the file in the asset folder that contains the keywords
-  /// Return the speech obtained or the error catched
+  /// Return the speech obtained or the error caught
 
   static speechRecognizerWithKeyword(String kwsModelName) {
    if(_subKey != null && _region != null){

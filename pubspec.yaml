@@ -6,7 +6,7 @@ homepage: https://github.com/cristianbregant/azure_speech_recognition
 environment:
   sdk: ">=2.1.0 <3.0.0"
   flutter: ">=1.10.0 <2.0.0"
- 
+
 
 dependencies:
   flutter:
@@ -30,6 +30,8 @@ flutter:
       android:
         package: com.bregant.azure_speech_recognition
         pluginClass: AzureSpeechRecognitionPlugin
+      ios:
+        pluginClass: SwiftAzureSpeechRecognitionPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

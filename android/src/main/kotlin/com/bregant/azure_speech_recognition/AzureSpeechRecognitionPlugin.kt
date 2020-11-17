@@ -33,7 +33,7 @@ import android.text.TextUtils
 import java.net.URI
 
 /** AzureSpeechRecognitionPlugin */
-public class AzureSpeechRecognitionPlugin() : FlutterPlugin, Activity(), MethodCallHandler {
+class AzureSpeechRecognitionPlugin : FlutterPlugin, Activity(), MethodCallHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -155,7 +155,7 @@ public class AzureSpeechRecognitionPlugin() : FlutterPlugin, Activity(), MethodC
 
     // Mic Streaming, it need the additional method implementend to get the data from the async task
     private fun micStreamRecognition(config: SpeechConfig) {
-        val logTag: String = "micStream"
+        val logTag = "micStream"
         try {
             val audioInput: AudioConfig = AudioConfig.fromStreamInput(createMicrophoneStream())
             val reco = SpeechRecognizer(config, audioInput)
@@ -230,7 +230,7 @@ public class AzureSpeechRecognitionPlugin() : FlutterPlugin, Activity(), MethodC
 
     /// Recognize Intent method from microsoft sdk
     private fun recognizeIntent(speechSubscriptionKey: String, serviceRegion: String, appId: String, lang: String) {
-        val logTag: String = "intent"
+        val logTag = "intent"
         val content: ArrayList<String> = ArrayList()
         try {
             val audioInput = AudioConfig.fromStreamInput(createMicrophoneStream())
@@ -268,23 +268,19 @@ public class AzureSpeechRecognitionPlugin() : FlutterPlugin, Activity(), MethodC
     }
 
     private fun keywordRecognizer(speechSubscriptionKey: String, serviceRegion: String, lang: String, kwsModelFile: String) {
-        val logTag: String = "keyword"
-        var continuousListeningStarted: Boolean = false
+        val logTag = "keyword"
+        var continuousListeningStarted = false
         lateinit var reco: SpeechRecognizer
         lateinit var audioInput: AudioConfig
-        val content: ArrayList<String> = ArrayList<String>()
+        val content: ArrayList<String> = ArrayList()
 
         if (continuousListeningStarted) {
-            if (reco != null) {
-                val task: Future<Void> = reco.stopContinuousRecognitionAsync()
+            val task: Future<Void> = reco.stopContinuousRecognitionAsync()
 
-                setOnTaskCompletedListener(task) {
-                    Log.i(logTag, "Continuous recognition stopped.")
-                    continuousListeningStarted = false
-                    azureChannel.invokeMethod("speech.onStartAvailable", null)
-                }
-            } else {
+            setOnTaskCompletedListener(task) {
+                Log.i(logTag, "Continuous recognition stopped.")
                 continuousListeningStarted = false
+                azureChannel.invokeMethod("speech.onStartAvailable", null)
             }
             return
         }

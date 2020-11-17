@@ -13,3 +13,4 @@
   [SwiftAzureSpeechRecognitionPlugin registerWithRegistrar:registrar];
 }
 @end
+

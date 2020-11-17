@@ -1,0 +1,30 @@
+PODS:
+  - azure_speech_recognition (0.0.1):
+    - Flutter
+    - MicrosoftCognitiveServicesSpeech-iOS
+  - Flutter (1.0.0)
+  - MicrosoftCognitiveServicesSpeech-iOS (1.14.0)
+
+DEPENDENCIES:
+  - azure_speech_recognition (from `.symlinks/plugins/azure_speech_recognition/ios`)
+  - Flutter (from `Flutter`)
+  - MicrosoftCognitiveServicesSpeech-iOS (~> 1.6)
+
+SPEC REPOS:
+  trunk:
+    - MicrosoftCognitiveServicesSpeech-iOS
+
+EXTERNAL SOURCES:
+  azure_speech_recognition:
+    :path: ".symlinks/plugins/azure_speech_recognition/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  azure_speech_recognition: ded83b967c23def2979f8aa9f0439475852fc179
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  MicrosoftCognitiveServicesSpeech-iOS: 0661e5d6a6ada5a220b60d8d6e88056bb43469ae
+
+PODFILE CHECKSUM: 1b860b8cae70da9b35493d91613131d4827632cd
+
+COCOAPODS: 1.9.3
