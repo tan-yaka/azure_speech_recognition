@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  azure_speech_recognition: ded83b967c23def2979f8aa9f0439475852fc179
+  azure_speech_recognition: fe5c6407018cfb6e26f942d9e8b40e227adbc5c1
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   MicrosoftCognitiveServicesSpeech-iOS: 0661e5d6a6ada5a220b60d8d6e88056bb43469ae
 

@@ -33,6 +33,7 @@ public class SwiftAzureSpeechRecognitionPlugin: NSObject, FlutterPlugin {
     let _region = _args?["region"] as? String;
     let _lang = _args?["language"] as? String;
 
+/*
     var speechConfig: SPXSpeechConfiguration?
     do {
         //try speechConfig = SPXSpeechConfiguration(endpoint: _endpoint, subscription: _sub)
@@ -53,6 +54,7 @@ public class SwiftAzureSpeechRecognitionPlugin: NSObject, FlutterPlugin {
 
     let result = try! reco.recognizeOnce()
     print(result.text!)
+ */
  }
 
   private func micStreamFromSubscription(call: FlutterMethodCall, result: FlutterResult) {
