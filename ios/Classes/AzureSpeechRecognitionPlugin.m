@@ -8,6 +8,8 @@
 #import "azure_speech_recognition-Swift.h"
 #endif
 
+#import <MicrosoftCognitiveServicesSpeech/SPXSpeechApi.h>
+
 @implementation AzureSpeechRecognitionPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   [SwiftAzureSpeechRecognitionPlugin registerWithRegistrar:registrar];
